@@ -6,4 +6,5 @@ urlpatterns = [
     # re_path(r'^.*$', index, name='index'),
     path('join', index),
     path('create', index),
+    path('join/1', index),
 ]
