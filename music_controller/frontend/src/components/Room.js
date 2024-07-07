@@ -16,10 +16,12 @@ class Room extends Component {
         };
         this.roomCode = this.props.params.roomCode;  // Access params from props
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
-        this.getRoomDetails();
         this.updateShowSettings = this.updateShowSettings.bind(this);
         this.renderSettingsButton = this.renderSettingsButton.bind(this);
         this.renderSettings = this.renderSettings.bind(this);
+        this.getRoomDetails = this.getRoomDetails.bind(this);
+        this.getRoomDetails();
+
     }
 
     getRoomDetails() {
@@ -76,7 +78,7 @@ class Room extends Component {
                         voteToSkip={this.state.votesToSkip}
                         guestCanPause={this.state.guestCanPause}
                         roomCode={this.state.roomCode}
-                        updateCallback={() => { }}
+                        updateCallback={(this.getRoomDetails)}
                     />
                 </Grid>
                 <Grid item xs={12} align="center">
