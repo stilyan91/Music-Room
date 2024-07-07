@@ -69,5 +69,5 @@ class RoomJoinPage extends Component {
     }
 
 }
-//ZCPWPA
+
 export default withParams(withNavigate(RoomJoinPage));
