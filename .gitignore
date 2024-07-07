@@ -39,6 +39,7 @@ npm-debug.log
 /output/
 /cache/
 boilerplate.zip
+env/
 
 # Spritesmith
 spritesmith-generated/
@@ -50,3 +51,5 @@ tmp_email/
 .direnv
 .envrc
 .tool-versions
+
+music_controller/spotify/credentials.py
