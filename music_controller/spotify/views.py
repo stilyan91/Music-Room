@@ -4,13 +4,14 @@ from rest_framework.views import APIView
 from requests import Request, post
 from rest_framework import status
 from rest_framework.response import Response
-from .util import update_or_create_user_tokens
+from .util import update_or_create_user_tokens, is_spotify_authenticated
 
 import os 
 
-
-
 load_dotenv()
+REDIRECT_URI = os.getenv('REDIRECT_URI')
+SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 
 class AuthURL(APIView):
     def get(self, request, format=None):
@@ -18,8 +19,8 @@ class AuthURL(APIView):
         url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
             'response_type' : 'code',
-            'redirect_uri': os.getenv('REDIRECT_URI'),
-            'client_id': os.getenv('CLIENT_ID')
+            'redirect_uri': REDIRECT_URI,
+            'client_id': SPOTIFY_CLIENT_ID,
         }).prepare().url
 
         return Response({'url': url}, status=status.HTTP_200_OK)
@@ -32,9 +33,9 @@ def spotify_callback(request, format=None):
     response = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': os.getenv('REDIRECT_URI'),
-        'client_id': os.getenv('CLIENT_ID'),
-        'client_secret': os.getenv('CLIENT_SECRET')
+        'redirect_uri': REDIRECT_URI,
+        'client_id': SPOTIFY_CLIENT_ID,
+        'client_secret': SPOTIFY_CLIENT_SECRET
     }).json()
 
     access_token = response.get('access_token')
@@ -50,3 +51,7 @@ def spotify_callback(request, format=None):
 
     return redirect('frontend:')
 
+class isAuthenticated(APIView):
+    def get(self, request, format=None):
+        is_authenticated = is_spotify_authenticated(self.request.session.session_key)
+        return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
