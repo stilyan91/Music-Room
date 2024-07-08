@@ -61,6 +61,7 @@ class Room extends Component {
             });
     };
 
+
     leaveButtonPressed() {
         const requestOptions = {
             method: "POST",
